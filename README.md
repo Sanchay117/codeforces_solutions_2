@@ -33,3 +33,5 @@ This repository contains my solutions to various Codeforces problems. Each probl
 
 Feel free to fork this repository and submit your own solutions or improvements.
 
+## Note
+I have used CLion as my developer environment.
