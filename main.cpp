@@ -484,32 +484,19 @@ void solve(int tt) {
     // print(prefix);
     // print(suffix);
 
+    map<int,int> last_index;
+    fr(i,0,n) {
+        last_index[arr_copy[i]] = i;
+    }
+
     vector<ll> ans;
 
     fr(i,0,n) {
         int x = arr[i];
 
         int l = 0,r = n-1;
-        int ind;
-        while(l<=r) {
-            ind=(l+r)/2;
-
-            // bug(ind,arr_copy[ind]);
-
-            if(arr_copy[ind]>x) {
-                r = ind-1;
-            }else if(arr_copy[ind]<x) {
-                l = ind+1;
-            }else {
-                break;
-            }
-        }
-
-        while(ind<n && arr_copy[ind]==x) {
-            ind++;
-        }
-
-        ind--;
+        int ind = last_index[x];
+        // bug(ind,x);
 
         int count_less_equal = ind+1;
         int count_greater = n-count_less_equal;
