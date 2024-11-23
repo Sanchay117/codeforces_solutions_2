@@ -460,25 +460,117 @@ ll largestDivisor(ll n) {
     return 1;
 }
 
-void solve(int tt) {
+// vi subsets(int arr[],int n,int k,vi &ans) {
+//     int totalSubsets = 1 << n;
+//
+//     fr(mask,0,totalSubsets) {
+//         int bitwiseAND = -1;
+//
+//         fr(i,0,n) {
+//             if (mask & (1 << i)) {
+//                 if(bitwiseAND==-1) {
+//                     bitwiseAND = arr[i];
+//                     ans.pb(arr[i]);
+//                 }
+//                 else {
+//                     bitwiseAND &= arr[i];
+//                     ans.pb(arr[i]);
+//                 }
+//             }
+//         }
+//
+//         if(bitwiseAND == k) {
+//             return ans;
+//         }
+//
+//         ans.clear();
+//     }
+//     return ans;
+// }
 
-    int n;cin >> n;
-    int arr[n];ArrInput(arr,n);
-
-    map<int,int> partOf;
-    for(auto x:arr) {
-        partOf[x]=1;
+bool backtrack(const vector<int>& arr, int index, int currentAnd, int K, vector<int> subset) {
+    if (currentAnd == K) {
+        // Found a valid subset
+        cout << "Subset: { ";
+        for (int num : subset) {
+            cout << num << " ";
+        }
+        cout << "}" << endl;
+        return true;
     }
 
-    int n_og = n;
-    n-=2;
-    fr(i,1,n_og-2+1) {
-        // bug(i,n);
-        if(n%i==0 && partOf[i]==1 && partOf[n/i]==1) {
-            cout << i << " " << n/i << endl;
-            return;
+    if (index == arr.size() || currentAnd < K) {
+        return false;
+    }
+
+    subset.push_back(arr[index]);
+    if(currentAnd == -1 ) currentAnd = arr[index];
+    if (backtrack(arr, index + 1, currentAnd & arr[index], K, subset)) {
+        return true;
+    }
+
+    subset.pop_back();
+
+    if (backtrack(arr, index + 1, currentAnd, K, subset)) {
+        return true;
+    }
+
+    return false;
+}
+
+bool isSubsetWithBitwiseAndEqualToK(const vector<int>& arr, int K) {
+    vector<int> subset;
+    for (int num : arr) {
+        if (num == K) {
+            cout << "Subset: { " << num << " }" << endl;
+            return true; // Single element match
         }
     }
+    return backtrack(arr, 0, -1, K, subset); // Start with -1 (all bits set)
+}
+
+void solve(int tt) {
+
+    int n,k;cin >> n >> k;
+    vi arr;
+    fr(i,0,n) {
+        int x;cin >> x;
+        arr.pb(x);
+    }
+
+    if (isSubsetWithBitwiseAndEqualToK(arr, k)) {
+        cout << "Yes, a subset exists with AND equal to " << k << endl;
+    } else {
+        cout << "No subset found with AND equal to " << k << endl;
+    }
+
+    //
+    // vector<vi> numsWithIthBitSet(32,vi());
+    //
+    // fr(i,0,32) {
+    //     for(auto num : arr) {
+    //         if(num & (1<<i) > 0) {
+    //             numsWithIthBitSet[i].pb(num);
+    //         }
+    //     }
+    // }
+    //
+    // vi ans;
+    // bool possible = true;
+    //
+    // for (int i = 0;i<32;i++) {
+    //     int bit = ((1) << i) & k;
+    //     if(bit) {
+    //         if(numsWithIthBitSet[i].size()==0) {
+    //             possible = false;
+    //             break;
+    //         }else {
+    //             ans.pb(numsWithIthBitSet[i][0]);
+    //         }
+    //     }else {
+    //
+    //     }
+    // }
 
 }
 
