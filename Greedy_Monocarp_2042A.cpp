@@ -1,3 +1,6 @@
+//
+// Created by bravefart69 on 3/12/24.
+//
 #include <bits/stdc++.h>
 #include <climits>
 #include <fstream>
@@ -463,93 +466,30 @@ ll largestDivisor(ll n) {
 void solve(int tt) {
 
     int n,k;cin >> n >> k;
-    string s;cin >> s;
-    //
-    // int zeros = 0,ones = 0;
-    //
-    // for(auto x:s) {
-    //     if(x=='0') zeros++;
-    //     else ones++;
-    // }
+    int arr[n];ArrInput(arr,n);
 
-    int maxScore = 0;
+    sort(arr,arr+n);
+    reverse(arr,arr+n);
 
-    int start = 1;
-    while(start<n && s[start]=='0') start++;
+    int coins = 0,ans = 0;
 
-    int l = start,contribution = 1;
-    bool firstZero = false;
-
-    while(l<n) {
-        if(s[l]=='1') {
-            firstZero = false;
-            maxScore+=contribution;
-            contribution++;
+    int l = 0;
+    while(l<n && coins<k) {
+        if(coins+arr[l]<=k) {
+            coins+=arr[l];
             l++;
         }else {
-            if(!firstZero) {
-                contribution--;
-                firstZero = true;
-            }
-
-            maxScore-=contribution;
-            l++;
+            ans = k-coins;
+            coins = k;
+            break;
         }
     }
 
-    if(maxScore<k) {
-        out(-1);
-        return;
+    if(coins<k) {
+        ans += k-coins;
     }
 
-    int left = 1, r = n-start;
-
-    int found;
-
-    while(left<=r) {
-
-        const int mid = (left+r)/2;
-
-        int groups = 1;
-        int score = 0;
-
-        bool firstZero = false;
-        bool midReached = false;
-
-        fr(i,start,n) {
-            if(s[i]=='1') {
-                score+=groups;
-                firstZero = false;
-                if(groups<mid) {
-                    groups++;
-                }else {
-                    midReached = true;
-                }
-            }else {
-                if(!firstZero && !midReached) {
-                    groups--;
-                    firstZero = true;
-                }
-                score -= groups;
-            }
-        }
-
-        if(groups<mid) {
-            r = groups;
-            if(score>=k) found = groups;
-            continue;
-        }
-
-        if(score>=k) {
-            r = mid-1;
-            found = mid;
-        }else {
-            left = mid+1;
-        }
-
-    }
-
-    out(found+1);
+    out(ans);
 
 }
 

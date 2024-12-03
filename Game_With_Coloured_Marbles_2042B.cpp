@@ -1,3 +1,6 @@
+//
+// Created by bravefart69 on 3/12/24.
+//
 #include <bits/stdc++.h>
 #include <climits>
 #include <fstream>
@@ -462,95 +465,42 @@ ll largestDivisor(ll n) {
 
 void solve(int tt) {
 
-    int n,k;cin >> n >> k;
-    string s;cin >> s;
-    //
-    // int zeros = 0,ones = 0;
-    //
-    // for(auto x:s) {
-    //     if(x=='0') zeros++;
-    //     else ones++;
-    // }
+    int n;cin >> n;
+    int colors[n];ArrInput(colors,n);
 
-    int maxScore = 0;
+    map<int,int> freq;
+    for(auto x:colors) freq[x]++;
 
-    int start = 1;
-    while(start<n && s[start]=='0') start++;
+    vector<pii> arr; // {color,freq} -> sort in increasing order by freq
 
-    int l = start,contribution = 1;
-    bool firstZero = false;
+    for(auto [k,v]:freq) arr.emplace_back(k,v);
 
-    while(l<n) {
-        if(s[l]=='1') {
-            firstZero = false;
-            maxScore+=contribution;
-            contribution++;
+    sort(arr.begin(),arr.end(),[] (pii a,pii b) {
+        return a.S < b.S;
+    });
+
+    int score = 0;
+
+    int l = 0;
+    bool alt = true;
+    while(l<arr.size()) {
+        int frq = arr[l].S;
+
+        // bug(frq,arr[l].F);
+
+        if(frq == 1) {
+            if(alt) {
+                score+=2;
+                alt = false;
+            }else alt = true;
             l++;
         }else {
-            if(!firstZero) {
-                contribution--;
-                firstZero = true;
-            }
-
-            maxScore-=contribution;
+            score++;
             l++;
         }
     }
 
-    if(maxScore<k) {
-        out(-1);
-        return;
-    }
-
-    int left = 1, r = n-start;
-
-    int found;
-
-    while(left<=r) {
-
-        const int mid = (left+r)/2;
-
-        int groups = 1;
-        int score = 0;
-
-        bool firstZero = false;
-        bool midReached = false;
-
-        fr(i,start,n) {
-            if(s[i]=='1') {
-                score+=groups;
-                firstZero = false;
-                if(groups<mid) {
-                    groups++;
-                }else {
-                    midReached = true;
-                }
-            }else {
-                if(!firstZero && !midReached) {
-                    groups--;
-                    firstZero = true;
-                }
-                score -= groups;
-            }
-        }
-
-        if(groups<mid) {
-            r = groups;
-            if(score>=k) found = groups;
-            continue;
-        }
-
-        if(score>=k) {
-            r = mid-1;
-            found = mid;
-        }else {
-            left = mid+1;
-        }
-
-    }
-
-    out(found+1);
-
+    out(score);
 }
 
 int32_t main(){
