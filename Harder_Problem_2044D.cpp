@@ -1,3 +1,6 @@
+//
+// Created by bravefart69 on 17/12/24.
+//
 #include <bits/stdc++.h>
 #include <climits>
 #include <fstream>
@@ -462,7 +465,36 @@ ll largestDivisor(ll n) {
 
 void solve(int tt) {
 
+    int n;cin >> n;
+    int arr[n];ArrInput(arr,n);
 
+    int lo = 1;
+
+    vi done (n,0);
+    map<int,int> exist;
+
+    for(auto x:arr) exist[x]++;
+
+    vi buff;
+    fr(i,1,n+1) {
+        if(exist[i]==0) buff.pb(i);
+    }
+
+    int ptr = 0;
+
+    // for(auto x:arr) done[x-1] = 1;
+    vi brr;
+    for(auto x:arr) {
+        if(done[x-1]==0) {
+            brr.pb(x);
+            done[x-1]=1;
+        }else {
+            brr.pb(buff[ptr]);
+            ptr++;
+        }
+    }
+
+    print(brr);
 }
 
 int32_t main(){
