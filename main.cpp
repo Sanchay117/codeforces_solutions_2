@@ -82,12 +82,53 @@ void SieveOfEratosthenes() {
 
 void solve(int tt) {
 
-	int n;
-	cin >> n;
-	for (int ans = 1, cur = 1; ; ans++, cur = cur * 2 + 2) {
-		if (cur >= n) {
-			cout << ans << '\n';
-			break;
+    string s;cin >> s;
+
+	map<int,int> freq;
+	int sum = 0;
+
+	for(auto x:s) {
+		sum+= (x-'0');
+		freq[x-'0']++;
+	}
+
+	if(sum%9==0) {
+		haan;
+		return;
+	}
+
+	int rem = (sum%9);
+
+	if(rem%2==0) {
+		if(rem == 2) {
+			if((freq[2]>=2 && freq[3]>=2) || (freq[2]>=5 && freq[3]>=1) || (freq[2]>=8)) haan;
+			else nahi;
+		}else if(rem==4) {
+			if(freq[2]==1 && freq[3]>=2 || (freq[2]>=4 && freq[3]>=1) || (freq[2]>=7)) haan;
+			else nahi;
+		}else if(rem == 6) {
+			if(freq[3]>=2 || freq[2]>=6) haan;
+			else nahi;
+		}else if(rem == 8) {
+			if((freq[2]>=2 && freq[3]>=1) || (freq[2]>=5)) haan;
+			else nahi;
+		}
+
+	}else {
+		int left = 9-rem;
+		if(freq[2]>=left/2) haan;
+		else if(rem == 1) {
+			// freq[2] < 4
+			if(freq[2]>=1 && freq[3]>=1) haan;
+			else nahi;
+		}else if(rem == 3) {
+			if(freq[3]>=1) haan;
+			else nahi;
+		}else if(rem == 5) {
+			// freq[2] <2
+			nahi;
+		}else {
+			nahi;
 		}
 	}
 
