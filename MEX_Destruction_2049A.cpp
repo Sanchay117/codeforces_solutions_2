@@ -1,3 +1,6 @@
+//
+// Created by bravefart69 on 14/1/25.
+//
 #include <bits/stdc++.h>
 #include <climits>
 #include <fstream>
@@ -83,7 +86,26 @@ void SieveOfEratosthenes() {
 
 void solve(int tt) {
 
+	int n;cin >> n;
+	int arr[n];fr(i,0,n)cin >> arr[i];
 
+	int ans = 0;
+	int  l = 0,r = 0;
+
+	while(l<n) {
+		if(arr[l]!=0) {
+			int r = l+1;
+			while( r<n && arr[r]!=0) {
+				r++;
+			}
+			ans++;
+			l = r;
+		}else {
+			l++;
+		}
+	}
+
+	out(min(ans,2));
 
 }
 
