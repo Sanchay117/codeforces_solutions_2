@@ -1,3 +1,6 @@
+//
+// Created by bravefart69 on 18/1/25.
+//
 #include <bits/stdc++.h>
 #include <climits>
 #include <fstream>
@@ -83,34 +86,68 @@ void SieveOfEratosthenes() {
     }
 }
 
+int calculate_perimeter(int i, int j, int m, int x, int y) {
+	// Perimeter of square 1 and square 2 (both are m x m)
+	int perimeter1 = 4 * m;
+	int perimeter2 = 4 * m;
+
+	// Find the intersection of the two squares
+	int left = max(i, x);
+	int right = min(i + m, x + m);
+	int bottom = max(j, y);
+	int top = min(j + m, y + m);
+
+	// If there's an intersection
+	int overlap_perimeter = 0;
+	if (left < right && bottom < top) {
+		// There is an overlap, calculate the perimeter of the overlap
+		int overlap_width = right - left;
+		int overlap_height = top - bottom;
+		overlap_perimeter = 2 * (overlap_width + overlap_height);
+	}
+
+	// The combined perimeter is the sum of the individual perimeters minus the overlap perimeter
+	int combined_perimeter = perimeter1 + perimeter2 - overlap_perimeter;
+	return combined_perimeter;
+}
+
 void solve(int tt) {
 
-    int n;cin >> n;
-    // bug(n);
+	int n,m;cin >> n >> m;
 
-    cout << "1 ";
-    fr(i,2,n-1) {
-        cout << i-1 <<" ";
-    }
-    cout << "1 2" << endl;
+	int right = 0,up = 0;
+
+	int ans = 4*m*n;
+
+	fr(i,0,n) {
+
+		int x,y;cin >> x >> y;
+		if(i!=0)ans-=2*(m-x+m-y);
+
+	}
+
+	out(ans);
 
 }
 
-int32_t main() {
+int32_t main(){
 
-    #ifndef ONLINE_JUDGE
-        freopen("input.txt", "r", stdin);
-        freopen("output.txt", "w", stdout);
-    #endif
+	#ifndef ONLINE_JUDGE
+		freopen("input.txt","r",stdin);
+		freopen("output.txt","w",stdout);
+	#endif
 
-    int t = 1;
-    cin >> t;
-    int i = 1;
+	int t = 1;
+	cin >> t;
+	int i =1;
+    // bug(t);
 
-    while (t--) {
-        solve(i);
-        i++;
-    }
+    // SieveOfEratosthenes();
 
-    return 0;
+	while(t--){
+		solve(i);
+		i++;
+	}
+
+	return 0;
 }
