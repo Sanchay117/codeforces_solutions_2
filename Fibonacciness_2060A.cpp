@@ -1,3 +1,6 @@
+//
+// Created by bravefart69 on 20/1/25.
+//
 #include <bits/stdc++.h>
 #include <climits>
 #include <fstream>
@@ -83,27 +86,27 @@ void SieveOfEratosthenes() {
     }
 }
 
-void dfs(int u, vector<int> G[], vector<bool> &visited, vector<int> &reachable) {
-    visited[u] = true;
-    reachable.push_back(u);
-
-    for (int neighbor : G[u]) {
-        if (!visited[neighbor]) {
-            dfs(neighbor, G, visited, reachable);
-        }
-    }
-}
-
-vector<int> getReachableVertices(int u, vector<int> G[], int m1) {
-    vector<bool> visited(m1 + 1, false);
-    vector<int> reachable;
-    dfs(u, G, visited, reachable);
-    return reachable;
-}
-
 void solve(int tt) {
 
+    int arr[5];fr(i,0,4) {
+        if(i<2)cin >> arr[i];
+        else cin >> arr[i+1];
+    }
 
+    int mx = -1;
+
+    fr(i,-200,201) {
+        arr[2] = i;
+        int cnt = 0;
+        fr(i,0,3) {
+            if((arr[i+2])==(arr[i+1] + arr[i])) {
+                cnt++;
+            }
+        }
+        mx = max(mx,cnt);
+    }
+
+    out(mx);
 
 }
 
