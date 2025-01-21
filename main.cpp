@@ -46,6 +46,7 @@ using namespace std;
                                     cin >> arr[i][j] ;\
                                 }\
                              }
+#define ArrInput(arr,n) for(int i = 0;i<n;i++) cin >> arr[i];
 
 template <typename Arg1>
 void __f (const char* name, Arg1&& arg1) { cout << name << " : " << arg1 << endl; }
@@ -103,7 +104,19 @@ vector<int> getReachableVertices(int u, vector<int> G[], int m1) {
 
 void solve(int tt) {
 
+    int n;cin >> n;
+    int arr[n];ArrInput(arr,n);
 
+    int odd = 0,even = 0;
+    for(int x:arr) {
+        if((x&1)==1) odd++;
+        else even++;
+    }
+
+    if(even == 0) cout << odd-1<< endl;
+    else {
+        cout << odd + 1<<endl;
+    }
 
 }
 
