@@ -1,3 +1,6 @@
+//
+// Created by bravefart69 on 23/1/25.
+//
 #include <bits/stdc++.h>
 #include <climits>
 #include <fstream>
@@ -103,60 +106,14 @@ vector<int> getReachableVertices(int u, vector<int> G[], int m1) {
 }
 
 void solve(int tt) {
-    int n;cin >> n;
 
-    vector<int> edges[n+1];
+    int l,r;cin >> l >> r;
 
-    fr(i,0,n-1) {
-        int u,v;cin >> u >> v;
+    int ans = 0;
+    if(l == 1) ans++;
 
-        edges[u].push_back(v);
-        edges[v].push_back(u);
-    }
-
-    if(n==2) {
-        out(0);
-        return;
-    }
-
-    vector<pii> edgin;// {nodes,edges}
-
-    fr(i,1,n+1) {
-        edgin.emplace_back(i,edges[i].size());
-    }
-
-    sort(edgin.begin(),edgin.end(),[](pii a , pii b) {
-        if(a.S == b.S) return a.F > b.F;
-       return a.S > b.S;
-    });
-
-    // fr(i,0,n+1) {
-    //     cout << edgin[i].F << " " << edgin[i].S << endl;
-    // }
-
-    int ans = edgin[0].S;
-    // bug(ans);
-    for(int connected: edges[edgin[0].F]) {
-        edges[connected].pop_back();
-    }
-
-    edges[edgin[0].F].clear();
-    edgin.clear();
-
-    fr(i,1,n+1) {
-        edgin.emplace_back(i,edges[i].size());
-    }
-
-    sort(edgin.begin(),edgin.end(),[](pii a , pii b) {
-        if(a.S == b.S) return a.F > b.F;
-       return a.S > b.S;
-    });
-
-    // fr(i,0,n+1) {
-    //     cout << edgin[i].F << " " << edgin[i].S << endl;
-    // }
-
-    ans += edgin[0].S-1;
+    if(l!=1)ans += (r-l);
+    else ans+= max((r-2),0);
 
     out(ans);
 
