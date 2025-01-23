@@ -1,3 +1,6 @@
+//
+// Created by bravefart69 on 23/1/25.
+//
 #include <bits/stdc++.h>
 #include <climits>
 #include <fstream>
@@ -104,8 +107,64 @@ vector<int> getReachableVertices(int u, vector<int> G[], int m1) {
 
 void solve(int tt) {
 
+    lli n,l,r;cin >> n >> l >> r;
 
+    lli arr[n];ArrInput(arr,n);
 
+    lli len = r-l+1;
+
+    vector<pii> list;
+    fr(i,0,n) {
+        list.emplace_back(arr[i],i);
+    }
+
+    sort(list.begin(),list.end(),[](pii a,pii b) {
+        return a.F<b.F;
+    });
+
+    lli leftSum = 0,rightSum = 0;
+    lli leftLen=0,rightLen = 0;
+
+    int cnt = 0;
+    fr(i,0,n) {
+        if(cnt == len) break;
+        if(list[i].S<=r-1) {
+            cnt++;
+            leftSum+=list[i].F;
+        }
+    }
+    leftLen = cnt;
+
+    cnt = 0;
+    fr(i,0,n) {
+        if(cnt == len) break;
+        if(list[i].S>=l-1) {
+            cnt++;
+            rightSum+=list[i].F;
+        }
+    }
+    rightLen = cnt;
+
+    vector<lli> seg;
+    for(int i = l-1;i<r;i++) {
+        seg.push_back(arr[i]);
+    }
+
+    sort(seg.begin(),seg.end());
+
+    if(leftLen<len) {
+        for(int i = 0;i<len-leftLen;i++) {
+            leftSum+=seg[i];
+        }
+    }
+
+    if(rightLen<len) {
+        for(int i = 0;i<len-rightLen;i++) {
+            rightSum+=seg[i];
+        }
+    }
+
+    out(min(leftSum,rightSum));
 }
 
 int32_t main() {
