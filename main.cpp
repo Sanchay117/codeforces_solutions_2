@@ -85,33 +85,12 @@ void SieveOfEratosthenes() {
 }
 
 void solve(int tt) {
-    int l,r;cin >> l >> r;
-    const int mod = 998'244'353;
 
-    lli ans = 0;
-    int i = l;
-    while(i<=r) {
-        ans++;
-        i*=2;
-    }
-
-    lli ans2 = 0;
-    ans2 = r/(pow(2,ans-1));
-    ans2 %= mod;
-    ans2-= l-1;
-
-    if(ans-2>=0) {
-        lli x = r/(3*pow(2,ans-2));
-        if(x>=l) {
-            x = x-l+1;
-            x = ((x%mod)*(ans-1)%mod)%mod;
-            ans2+=x;
-            ans2%=mod;
-        }
-    }
+    int n;cin >> n;
+    int arr[n];ArrInput(arr,n);
 
 
-    cout << ans << " " << ans2%mod << endl;
+
 }
 
 int32_t main() {
