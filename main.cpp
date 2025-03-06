@@ -86,114 +86,48 @@ void SieveOfEratosthenes() {
     }
 }
 
+int bfs(vector<pii> adj[],int n) {
+    vector<bool> visited(n+1,false);
+
+    int ans=1;
+
+    queue<pii> q;
+    q.push({1,1});
+    visited[1]=true;
+
+    while(!q.empty()) {
+        auto [u,t] = q.front();
+        q.pop();
+        bool set = false;
+        for(auto [v,i]:adj[u]) {
+            if(!visited[v]) {
+                visited[v] = true;
+                if(i<t && !set) {
+                    ans++;
+                    set = true;
+                }
+                q.push({v,i});
+            }
+        }
+    }
+
+    return ans;
+}
+
 void solve(int tt) {
 
     int n;cin >> n;
-    string s;cin >> s;
+    vector<pii> adj[n+1];
+    vi mins (n+1,INT_MAX);
 
-    vi ans (n,0);
-    stack<pair<char,int>> stacky_boi;
-
-
-    string t = s;
-    stack<char> ss;
-    int cnt = 0;
-
-    fr(i,0,n) {
-        if(s[i]=='(') {
-            if(ss.empty()) continue;
-            ss.pop();
-            cnt++;
-        }
-        else {
-            ss.push(')');
-            cnt++;
-        }
+    fr(i,0,n-1) {
+        int u,v;cin >> u >> v;
+        // if(mins[u] == INT_MAX)
+        adj[u].pb({v,i});
+        adj[v].pb({u,i});
     }
 
-    if(!ss.empty()) cnt = -1;
-
-    if(cnt == n) {
-        out(1);
-        fr(i,0,n) {
-            cout << 1 << " ";
-        }
-        cout << endl;
-        return;
-    }
-
-    bool diff = false;
-
-    fr(i,0,n) {
-        if(s[i]==')' && stacky_boi.empty()) continue;
-        if(s[i]==')') {
-            stacky_boi.pop();
-            // bug("POP");
-            ans[i] = 1;
-            s[i]='-';
-            diff = true;
-        }
-        else {
-            stacky_boi.push({'(',i});
-            // bug("PUSH");
-            ans[i] = 1;
-            s[i] = '-';
-        }
-    }
-
-    while(!stacky_boi.empty()) {
-        auto [c,i] = stacky_boi.top();
-        stacky_boi.pop();
-        s[i] = c;
-        ans[i] = 0;
-    }
-
-    bool valid = true;
-
-    fr(i,0,n) {
-        if(s[i]=='-') continue;
-        if(s[i]=='(') {
-            if(stacky_boi.empty()) {
-                valid = false;
-                break;
-            }
-            stacky_boi.pop();
-            ans[i] = 2;
-            s[i]='-';
-        }
-        else {
-            stacky_boi.push({')',i});
-            ans[i] = 2;
-            s[i] = '-';
-        }
-    }
-
-    if(!valid) {
-        out(-1);
-        return;
-    }
-
-    if(!stacky_boi.empty()) {
-        out(-1);
-        return;
-    }
-
-    if(!diff) {
-        for(auto &x:ans) {
-            if(x==2) x = 1;
-        }
-    }
-
-    bool two = false;
-    for(int x:ans) {
-        if (x==2) two = true;
-    }
-
-    if(two) {
-        out(2);
-    }else out(1);
-
-    printV(ans);
+    cout << bfs(adj,n) << endl;
 
 }
 
