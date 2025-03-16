@@ -86,48 +86,34 @@ void SieveOfEratosthenes() {
     }
 }
 
-int bfs(vector<pii> adj[],int n) {
-    vector<bool> visited(n+1,false);
-
-    int ans=1;
-
-    queue<pii> q;
-    q.push({1,1});
-    visited[1]=true;
-
-    while(!q.empty()) {
-        auto [u,t] = q.front();
-        q.pop();
-        bool set = false;
-        for(auto [v,i]:adj[u]) {
-            if(!visited[v]) {
-                visited[v] = true;
-                if(i<t && !set) {
-                    ans++;
-                    set = true;
-                }
-                q.push({v,i});
-            }
-        }
-    }
-
-    return ans;
-}
-
 void solve(int tt) {
 
-    int n;cin >> n;
-    vector<pii> adj[n+1];
-    vi mins (n+1,INT_MAX);
+    int n,m;cin >> n >> m;
 
-    fr(i,0,n-1) {
-        int u,v;cin >> u >> v;
-        // if(mins[u] == INT_MAX)
-        adj[u].pb({v,i});
-        adj[v].pb({u,i});
+    vector<pii> enemies;
+
+    fr(i,0,m) {
+        int x,y;cin >> x >> y;
+        if(x>y) swap(x,y);
+        enemies.push_back({x,y});
     }
 
-    cout << bfs(adj,n) << endl;
+    sort(all(enemies),[](pii a,pii b) {
+       if(a.F == b.F) {
+           return a.S<b.S;
+       }
+        return a.F < b.F;
+    });
+
+    lli ans = 0;
+    fr(a,0,n) {
+        int lo = a, hi = n-1;
+        while(lo<=hi) {
+            int mid = (hi+lo)/2;
+
+
+        }
+    }
 
 }
 
