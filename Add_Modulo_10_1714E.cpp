@@ -1,3 +1,6 @@
+//
+// Created by bravefart69 on 17/3/25.
+//
 #include <bits/stdc++.h>
 #include <climits>
 #include <fstream>
@@ -92,7 +95,41 @@ bool in(int a,initializer_list<int> arr) {
 }
 
 void solve(int tt) {
+    int n;cin >> n;
+    int arr[n];ArrInput(arr,n);
 
+    sort(arr,arr+n);
+
+    int type1 = 0,type2 = 0,type3 = 0;
+
+    for(int x:arr) {
+        int rem = x/10;
+        if(rem%2==0) {
+            int dig = x%10;
+            if(in(dig,{1,2,4,8})) {
+                type1++;
+            }else if(in(dig,{3,6,7,9})) type2++;
+            else type3++;
+        }else {
+            int dig = x%10;
+            if(in(dig,{3,6,7,9})) type1++;
+            else if(in(dig,{1,2,4,8})) type2++;
+            else type3++;
+        }
+    }
+
+    if(type1 == n || type2 == n ) haan;
+    else if(type3 == n) {
+        int x = arr[0],cnt= 0;
+        if(x%5==0 && x%2!=0) x+=5;
+        for(auto y:arr) {
+            if(y%5==0 && y%2!=0) y+=5;
+            if(y==x) cnt++;
+        }
+        if(cnt==n) haan;
+        else nahi;
+    }
+    else nahi;
 
 }
 
