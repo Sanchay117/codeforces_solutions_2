@@ -88,33 +88,6 @@ void SieveOfEratosthenes() {
 
 void solve(int tt) {
 
-    int n,m;cin >> n >> m;
-
-    vector<pii> enemies;
-
-    fr(i,0,m) {
-        int x,y;cin >> x >> y;
-        if(x>y) swap(x,y);
-        enemies.push_back({x,y});
-    }
-
-    sort(all(enemies),[](pii a,pii b) {
-       if(a.F == b.F) {
-           return a.S<b.S;
-       }
-        return a.F < b.F;
-    });
-
-    lli ans = 0;
-    fr(a,0,n) {
-        int lo = a, hi = n-1;
-        while(lo<=hi) {
-            int mid = (hi+lo)/2;
-
-
-        }
-    }
-
 }
 
 int32_t main() {
