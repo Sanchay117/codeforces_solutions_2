@@ -93,6 +93,20 @@ bool in(int a,initializer_list<int> arr) {
 
 void solve(int tt) {
 
+    int n,m;cin >> n >> m;
+    vi arr(n); ArrInput(arr,n);
+    vi cnt(n);
+
+    for(int x:arr) {
+        cnt[x-1]++;
+    }
+
+    int lo = 1,hi = 2*m;
+    while(lo<=hi) {
+        int mid = (lo+hi)/2;
+
+
+    }
 
 }
 
