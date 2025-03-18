@@ -93,39 +93,10 @@ bool in(int a,initializer_list<int> arr) {
 
 void solve(int tt) {
 
-    int n,m;cin >> n >> m;
-    vector<priority_queue<int,vector<int>,greater<> >> nums (10e5+1);
-    vector<priority_queue<int,vector<int>,greater<> >> nums2 (10e5+1);
-    fr(i,0,n) {
-        fr(j,0,m) {
-            int n;cin >> n;
-            nums[n].push(i+1);
-            nums2[n].push(j+1);
-        }
-    }
+    int n,x,y;cin >> n >> x >> y;
+    vi arr;ArrInput(arr,n);
 
-    lli ans = 0;
-    for(int y = 0;y<=10e5;y++) {
-        auto pq = nums[y];
-        auto pq2 = nums2[y];
-        if(pq.size()>1) {
-            int k = pq.size();
-            lli s = 0,i=0;
-            while(!pq.empty()) {
-                auto x = pq.top();
-                auto z = pq2.top();
-                pq.pop();
-                pq2.pop();
-                // bug(x.F,x.S);
-                s+=(2*i+1-k)*x + (2*i+1-k)*z;
-                i++;
-            }
-            // bug(s);
-            ans+=s;
-        }
-    }
 
-    out(ans);
 
 }
 
