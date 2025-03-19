@@ -93,10 +93,37 @@ bool in(int a,initializer_list<int> arr) {
 
 void solve(int tt) {
 
-    int n,x,y;cin >> n >> x >> y;
-    vi arr;ArrInput(arr,n);
+    int n;cin >> n;
+    string s;cin >> s;
 
+    vector<pii> graph;
 
+    int node = 0;
+    int edge = 0;
+    for(auto x:s) {
+        if(x=='.') {
+            if(node!=0) {
+                if(graph.size()==0) {
+                    graph.pb({node,-1});
+                    node = 0;
+                }else {
+                    graph.pb({node,edge});
+                    edge = 0;
+                }
+            }
+            edge++;
+        }else {
+            node++;
+        }
+    }
+
+    if(node!=0)graph.pb({node,edge});
+
+    for(auto x:graph) {
+        bug(x.F,x.S);
+    }
+
+    cout << "---------------------------" << endl;
 
 }
 
@@ -108,7 +135,7 @@ int32_t main() {
     #endif
 
     int t = 1;
-    // cin >> t;
+    cin >> t;
     int i = 1;
 
     while (t--) {
