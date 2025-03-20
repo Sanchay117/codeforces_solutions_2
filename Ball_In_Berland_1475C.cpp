@@ -1,3 +1,6 @@
+//
+// Created by bravefart69 on 20/3/25.
+//
 #include <bits/stdc++.h>
 #include <climits>
 #include <fstream>
@@ -94,7 +97,55 @@ bool in(int a,initializer_list<int> arr) {
 
 void solve(int tt) {
 
+    int a,b,k;cin >> a >> b >> k;
+    vi A(k);ArrInput(A,k);
+    vi B(k);ArrInput(B,k);
 
+    vector<pii> pairs;
+    fr(i,0,k) {
+        pairs.pb({A[i],B[i]});
+    }
+
+    sort(all(pairs),[](pii a,pii b) {
+        if(a.F == b.F) return a.S<b.S;
+        return a.F<b.F;
+    });
+
+    map<int,int> lenMap;
+    map<int,int> girlMap;
+
+    int len = 1,crnt = pairs[0].F;
+    fr(i,1,k) {
+        if(pairs[i].F!=crnt) {
+            lenMap[crnt] = len;
+            len = 1;
+            crnt = pairs[i].F;
+        }else {
+            len++;
+        }
+    }
+    lenMap[crnt] = len;
+
+    // for(auto [k,v]:lenMap) {
+    //     bug(k,v);
+    // }
+
+    fr(i,0,k) {
+        girlMap[pairs[i].S]++;
+    }
+
+    // for(auto [k,v]:girlMap) {
+    //     bug(k,v);
+    // }
+
+    lli ans = 0;
+    fr(i,0,k) {
+        // bug(k,lenMap[pairs[i].F],girlMap[pairs[i].S],ans);
+        ans += (k-lenMap[pairs[i].F]-girlMap[pairs[i].S]+1);
+        // bug(ans);
+    }
+
+    out(ans/2);
 
 }
 
