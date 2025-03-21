@@ -1,3 +1,6 @@
+//
+// Created by bravefart69 on 21/3/25.
+//
 #include <bits/stdc++.h>
 #include <climits>
 #include <fstream>
@@ -95,7 +98,27 @@ bool in(int a,initializer_list<int> arr) {
 
 void solve(int tt) {
 
+    ulli n;cin >> n;
+    vector<ulli> arr(65);
+    arr[1] = 1;
+    fr(i,2,65) {
+        arr[i] = arr[i-1] + i + arr[i-1];
+    }
 
+    // printV(arr);
+
+    ulli ans = 0;
+
+    fr(i,0,64) {
+        ulli check = 1ull << i;
+        if((n & check) !=0) {
+            // bug(ans,i,check);
+            ans += arr[i] + (i+1);
+            // bug(ans);
+        }else continue;
+    }
+
+    out(ans);
 
 }
 
