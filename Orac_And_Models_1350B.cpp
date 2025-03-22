@@ -1,3 +1,6 @@
+//
+// Created by bravefart69 on 22/3/25.
+//
 #include <bits/stdc++.h>
 #include <climits>
 #include <fstream>
@@ -95,24 +98,29 @@ bool in(int a,initializer_list<int> arr) {
 
 void solve(int tt) {
 
-    int n;cin >> n;
-    vi arr(n);ArrInput(arr,n);
+    int n; cin >> n;
+    vi arr(n); ArrInput(arr, n);
 
-    vi dp (n+1,1);
+    vi dp (n+1, 1);
 
-    fr(i,2,n+1) {
+    for (int i = 2; i <= n; i++) {
         int mx = 0;
-        fr(j,1,sqrt(i)+1) {
-            if(i%j==0) {
-                  if(arr[j-1]<arr[i-1]) {
-                      mx = max(mx,dp[j]);
-                  }
+        for (int j = 1; j*j <= i; j++) {
+            if (i % j == 0) {
+                int d1 = j, d2 = i / j;
+                if (arr[d1 - 1] < arr[i - 1]) {
+                    mx = max(mx, dp[d1]);
+                }
+                if (d1 != d2 && arr[d2 - 1] < arr[i - 1]) {
+                    mx = max(mx, dp[d2]);
+                }
             }
         }
-        dp[i] = mx+1;
+        dp[i] = mx + 1;
     }
 
-    out(*max_element(dp.begin()+1, dp.end()));
+    cout << *max_element(dp.begin() + 1, dp.end()) << "\n";
+
 
 }
 
