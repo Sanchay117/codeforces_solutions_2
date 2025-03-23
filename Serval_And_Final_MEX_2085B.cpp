@@ -1,3 +1,6 @@
+//
+// Created by bravefart69 on 24/3/25.
+//
 #include <bits/stdc++.h>
 #include <climits>
 #include <fstream>
@@ -95,7 +98,74 @@ bool in(int a,initializer_list<int> arr) {
 
 void solve(int tt) {
 
+    int n;cin >> n;
+    vi arr(n);ArrInput(arr,n);
 
+    int firstZero = -1;
+    fr(i,0,n) {
+        if(arr[i]==0) {
+            firstZero = i;
+            break;
+        }
+    }
+
+    int lastZero = -1;
+    for(int i = n-1;i>=0;i--) {
+        if(arr[i]==0) {
+            lastZero=i;
+            break;
+        }
+    }
+
+    int cnt = 0;
+    for(auto x:arr) {
+        if(x==0) cnt++;
+    }
+
+    if(firstZero==-1) {
+        out(1);
+        cout << 1 << " " << n << endl;
+    }else if(cnt == n) {
+        out(3);
+        cout << "1 2" << endl;
+        cout << "2 " << n-1 << endl;
+        cout << "1 2" << endl;
+    }
+    else {
+        if(cnt==1) {
+            if(arr[0]==0) {
+                out(2);
+                cout << "1 2" << endl;
+                cout << "1 " << n-1 << endl;
+            }else if(arr[n-1]==0) {
+                out(2);
+                cout << n-1 << " " << n  << endl;
+                cout << "1 " << n-1 << endl;
+            }else {
+                out(2);
+                cout << "1 " << firstZero+1 << endl;
+                cout << "1 " << n-firstZero << endl;
+            }
+        }else {
+            if(arr[n-1]!=0) {
+                out(2);
+                cout << "1 " << n-1 << endl;
+                cout << "1 2" << endl;
+            }else {
+                if(arr[0]==0) {
+                    out(3);
+                    cout << "1 2" << endl;
+                    cout << "2 " << n-1 << endl;
+                    cout << "1 2" << endl;
+                }else {
+                    out(2);
+                    cout << 2 << " " << n << endl;
+                    cout << "1 2" << endl;
+                }
+
+            }
+        }
+    }
 
 }
 
