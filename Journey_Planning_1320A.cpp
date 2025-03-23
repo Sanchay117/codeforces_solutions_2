@@ -1,3 +1,6 @@
+//
+// Created by bravefart69 on 23/3/25.
+//
 #include <bits/stdc++.h>
 #include <climits>
 #include <fstream>
@@ -95,7 +98,39 @@ bool in(int a,initializer_list<int> arr) {
 
 void solve(int tt) {
 
+    int n;cin >> n;
+    vlli beauty(n);ArrInput(beauty,n);
+    vlli c(n);
+    fr(i,0,n) {
+        c[i] = (i) - beauty[i];
+    }
 
+    map<lli,vector<lli>> mapping;
+    fr(i,0,n) {
+        mapping[c[i]].pb(i);
+    }
+
+    vlli dp(n,0);
+
+    fr(x,0,n) {
+        lli mx = 0;
+        lli C = x - beauty[x];
+
+        lli lo = 0;lli hi = mapping[C].size()-1;
+        lli mid;
+        while(lo<=hi) {
+            mid = (lo+hi)/2;
+            if(mapping[C][mid]>x) hi = mid-1;
+            else if(mapping[C][mid] == x) break;
+            else lo = mid+1;
+        }
+
+        if(mid>0) mx = dp[mapping[C][mid-1]];
+
+        dp[x] = mx + beauty[x];
+    }
+
+    out(*max_element(all(dp)));
 
 }
 
