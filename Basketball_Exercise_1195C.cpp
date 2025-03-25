@@ -1,3 +1,6 @@
+//
+// Created by bravefart69 on 25/3/25.
+//
 #include <bits/stdc++.h>
 #include <climits>
 #include <fstream>
@@ -95,7 +98,34 @@ bool in(int a,initializer_list<int> arr) {
 
 void solve(int tt) {
 
+    int n;cin >> n;
+    vi arr(n);ArrInput(arr,n);
+    vi brr(n);ArrInput(brr,n);
 
+    // printV(brr);
+
+    vector<vlli> dp(2,vlli(n));
+
+    dp[0][0] = arr[0];
+    dp[1][0] = brr[0];
+    dp[0][1] = arr[1] + brr[0];
+    dp[1][1] = brr[1] + arr[0];
+    fr(i,2,n) {
+        // bug(dp[0][i-1],dp[1][i-1],i);
+        // bug(dp[1][0]);
+
+        dp[0][i] = max({dp[1][i-1] + arr[i],dp[0][i-2]+arr[i],dp[1][i-2]+arr[i]});
+        // bug(i,dp[0][i],dp[1][i-2],arr[i]);
+        dp[1][i] = max({dp[0][i-1] + brr[i],dp[0][i-2]+brr[i],dp[1][i-2]+brr[i]});
+    }
+
+    lli mx1 = 0;lli mx2 = 0;
+    fr(i,0,n) {
+        mx1 = max(mx1,dp[0][i]);
+        mx2 = max(mx2,dp[1][i]);
+    }
+
+    out(max(mx1,mx2));
 
 }
 
