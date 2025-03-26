@@ -1,3 +1,6 @@
+//
+// Created by bravefart69 on 26/3/25.
+//
 #include <bits/stdc++.h>
 #include <climits>
 #include <fstream>
@@ -95,7 +98,50 @@ bool in(int a,initializer_list<int> arr) {
 
 void solve(int tt) {
 
+    int n;cin >> n;
+    vi arr(n);ArrInput(arr,n);
 
+    map<int,int> table;
+    for(auto x:arr) table[x]++;
+    map<int,int> fCOUNT;
+    for(auto [k,v]:table) fCOUNT[v]++;
+
+    auto cmp = [](pii a, pii b) {
+        return a.F < b.F;
+    };
+
+    priority_queue<pii, vector<pii>, decltype(cmp)> pq(cmp);
+
+    for(auto[k,v]:fCOUNT) {
+        pq.push({k,v}); // {freq->, freq^2}
+    }
+
+    lli ans = 0;
+
+    int mn = INT_MAX;
+
+    while (!pq.empty()) {
+        auto [f,f2] = pq.top();
+        // bug(f,f2);
+
+        if(mn>0) {
+
+            int top = min(mn, f);
+            int times = min({f,top,f2});
+
+            ans += top*(top+1)/2;
+            if(top-times>0) {
+                ans -= (top-times)*(top-times+1)/2;
+            }
+
+            mn = min(top-times,mn);
+
+        }
+
+        pq.pop();
+    }
+
+    out(ans);
 
 }
 
