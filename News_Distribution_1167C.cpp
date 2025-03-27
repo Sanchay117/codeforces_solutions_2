@@ -1,3 +1,6 @@
+//
+// Created by bravefart69 on 27/3/25.
+//
 #include <bits/stdc++.h>
 #include <climits>
 #include <fstream>
@@ -129,7 +132,34 @@ void bfs(vector<bool> &visited,vi adj[], vi& stored ,int start) {
 
 void solve(int tt) {
 
+    int n,m;cin >> n >> m;
+    vi adj[n+1];
 
+    fr(i,0,m) {
+        int n;cin >> n;
+
+        if(n==0) continue;;
+
+        vi arr(n);ArrInput(arr,n);
+
+        int node = 0;
+        while(node<n-1) {
+            adj[arr[node]].pb(arr[node+1]);
+            adj[arr[node+1]].pb(arr[node]);
+            node++;
+        }
+    }
+
+    vector<bool> visited(n+1,false);
+    vector<int> stored(n+1);
+
+    vi ans;
+    fr(i,1,n+1) {
+        bfs(visited,adj,stored,i);
+        ans.pb(stored[i]);
+    }
+
+    printV(ans);
 
 }
 
