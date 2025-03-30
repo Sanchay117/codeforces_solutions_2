@@ -1,3 +1,6 @@
+//
+// Created by bravefart69 on 30/3/25.
+//
 #include <bits/stdc++.h>
 #include <climits>
 #include <fstream>
@@ -95,7 +98,31 @@ bool in(int a,initializer_list<int> arr) {
 
 void solve(int tt) {
 
+    int n,m;cin >> n >> m;
 
+    vi x(n);ArrInput(x,n);
+    vi r(n);ArrInput(r,n);
+
+    map<lli,lli> map;
+
+    lli ans = 0;
+    fr(i,0,n) {
+        lli XX = x[i];lli R = r[i];
+        // bug(XX,R);
+        fr(j,XX-R,XX+R+1) {
+            lli val = R*R - pow(j-XX,2);
+            val = sqrt(val);
+            // bug(val,j);
+            map[j] = max(map[j],2*val+1);
+            // bug(map[j]);
+        }
+    }
+
+    for(auto [k,v]:map) {
+        ans += v;
+    }
+
+    out(ans);
 
 }
 
