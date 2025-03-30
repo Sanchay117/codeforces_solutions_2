@@ -129,7 +129,18 @@ void bfs(vector<bool> &visited,vi adj[], vi& stored ,int start) {
 
 void solve(int tt) {
 
+    int n,k;cin >> n >> k;
 
+    vi dp(k+1,0);
+    dp[1] = n;
+
+    fr(i,2,k+1) {
+
+        dp[i] = dp[i-1] + ((n/pow(2,i-1))-1 + (n-1));
+        bug(dp[i],dp[i-1]);
+    }
+
+    out(dp[k]);
 
 }
 
