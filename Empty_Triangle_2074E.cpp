@@ -1,3 +1,6 @@
+//
+// Created by bravefart69 on 31/3/25.
+//
 #include <bits/stdc++.h>
 #include <climits>
 #include <fstream>
@@ -95,7 +98,38 @@ bool in(int a,initializer_list<int> arr) {
 
 void solve(int tt) {
 
+    int n;
+    cin >> n;
 
+    int i = 1, j = 2, k = 3;
+    int ans;
+
+    while (true) {
+        cout << "? " << i << " " << j << " " << k << endl;
+        fflush(stdout);
+        cin >> ans;
+
+        if (ans == -1) {
+            exit(-1); // Invalid query, terminate
+        }
+
+        if (ans == 0) {
+            // Found a valid triangle
+            cout << "! " << i << " " << j << " " << k << endl;
+            fflush(stdout);
+            return;
+        }
+
+        // Ensure ans is a valid index before updating k
+        if (ans >= 1 && ans <= n) {
+            int v = rand()%3;
+            if(v == 0) i = ans;
+            else if(v==1) j = ans;
+            else k = ans;
+        } else {
+            exit(-1); // Invalid response, terminate
+        }
+    }
 
 }
 
