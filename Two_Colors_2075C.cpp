@@ -1,3 +1,6 @@
+//
+// Created by bravefart69 on 2/4/25.
+//
 #include <bits/stdc++.h>
 #include <climits>
 #include <fstream>
@@ -114,7 +117,7 @@ void solve(int tt) {
         lli right = m - mx;
 
         ans += left*right - min(left,right);
-        
+
         // ans+=left;
         // bug(ans);
     }
