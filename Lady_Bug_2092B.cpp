@@ -95,8 +95,29 @@ bool in(int a,initializer_list<int> arr) {
 
 void solve(int tt) {
 
+    int n;cin >> n;
+    string s;cin >> s;
+    string t;cin >> t;
 
+    int even = 0, odd = 0;
+    int even1 = 0, odd1 = 0;
 
+    fr(i,0,n) {
+        if (t[i] == '0') {
+            if ((i+1)%2 == 1) odd++;
+            else even++;
+        }
+        if (s[i] == '1') {
+            if ((i+1)%2 == 1) odd1++;
+            else even1++;
+        }
+    }
+
+    // bug(odd1,even1,odd,even);
+
+    if (odd1>even || even1>odd) {
+        nahi;
+    }else haan;
 }
 
 int32_t main() {
