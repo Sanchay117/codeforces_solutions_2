@@ -1,8 +1,4 @@
-odd1 : 0 | even1 : 0 | odd : 2 | even : 1
-YES
-odd1 : 0 | even1 : 2 | odd : 2 | even : 0
-YES
-odd1 : 1 | even1 : 0 | odd : 3 | even : 0
-NO
-odd1 : 1 | even1 : 1 | odd : 1 | even : 1
-YES
+9
+5
+5
+21
