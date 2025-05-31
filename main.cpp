@@ -90,24 +90,10 @@ void SieveOfEratosthenes() {
 
 void solve(int tt) {
 
-    string s;cin >> s;
+    int n;cin >> n;
+    vi arr(n);ArrInput(arr,n);
 
-    stack<char> st;
-    int cnt = 0;
-    for (auto c : s) {
-        if (c=='(') {
-            // bug(c);
-            st.push(c);
-        }
-        else {
-            // cout << "POPPIN OFF" << endl;
-            st.pop();
-        }
-        if (st.empty()) cnt++;
-    }
-    // bug(cnt);
-    if (cnt==1) nahi;
-    else haan;
+
 
 }
 
