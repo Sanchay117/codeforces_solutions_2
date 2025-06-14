@@ -90,36 +90,12 @@ void SieveOfEratosthenes() {
 
 void solve(int tt) {
 
-    int n;cin >> n;
+    int n,k;cin >> n >> k;
 
-    lli k;cin >> k;
-
-    vi arr(n);ArrInput(arr,n);
-    sort(all(arr),greater<int>());
-    int ans {0};
-
-    for (auto &x:arr) {
-        if (x%2==0) {
-            if (k>0) {
-                x++;
-                k--;
-            }
-        }
-        int num = x;
-        int ones = 0;
-        while (num>0) {
-            if (num%2==1) ones++;
-            num = num >> 1;
-        }
-        ans += ones;
-    }
-
-    lli num = arr[0];
-    while (num>0) {
-        if (num%2==1) ans++;
-        num = num >> 1;
-    }
-
+    int ones = k,zeros = n-k;
+    string ans;
+    fr(i,0,zeros) ans+='0';
+    fr(i,0,ones) ans+='1';
     out(ans);
 }
 
