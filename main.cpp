@@ -90,34 +90,19 @@ void SieveOfEratosthenes() {
 
 void solve(int tt) {
 
-    int n,k;cin >> n >> k;
-    int arr[n];ArrInput(arr,n);
+    int n;cin >> n;
+    string s;cin >> s;
 
-    int counts[n+1];
-    fill(counts, counts + n+1, 0);
-    for (int x:arr) {
-        counts[x]++;
+    int ans = INT_MAX;
+    int crnt = 0;
+    // Case 1 : a..abbb...ba...a
+    int i = 0;
+    while (i<n-1) {
+        if (s[i]!=s[i+1])crnt++;
+        i+=2;
     }
 
-    int k_eq = counts[k];
-    int k_gt = 0;
-    int k_lt = 0;
-    for (int i = k+1;i<=n;i++) {
-        k_gt += counts[i];
-    }
-
-    for (int i = 0;i<k;i++) {
-        k_lt += counts[i];
-    }
-
-    int ans = k_eq;
-    for (int i = 0;i<k;i++) {
-        if (counts[i]==0 && k_eq>0) k_eq--;
-        else if (counts[i]==0) ans++;
-    }
-
-    cout << ans << endl;
-
+    out(max(crnt-1,0));
 }
 
 int32_t main() {
