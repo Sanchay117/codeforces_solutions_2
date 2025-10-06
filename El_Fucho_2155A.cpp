@@ -90,6 +90,26 @@ void SieveOfEratosthenes() {
 
 void solve(int tt) {
 
+    int ans = 0;
+    int n;cin >> n;
+
+    int winners = n;
+    int loosers = 0;
+
+    while (true) {
+
+        if (winners == 1 && loosers == 1) {
+            out(ans+1);
+            return;
+        }
+
+        ans += loosers/2;
+        loosers -= loosers/2;
+        ans+= winners/2;
+        loosers += winners/2;
+        winners -= winners/2;
+
+    }
 
 }
 
