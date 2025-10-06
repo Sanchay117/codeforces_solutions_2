@@ -1,11 +1,4 @@
-5
-4
-abab
-6
-bababa
-7
-abababa
-2
-ab
-1
-b
+3
+2 4
+3 5
+2 3

@@ -90,19 +90,68 @@ void SieveOfEratosthenes() {
 
 void solve(int tt) {
 
-    int n;cin >> n;
-    string s;cin >> s;
+    lli k;cin >> k;
 
-    int ans = INT_MAX;
-    int crnt = 0;
-    // Case 1 : a..abbb...ba...a
-    int i = 0;
-    while (i<n-1) {
-        if (s[i]!=s[i+1])crnt++;
-        i+=2;
+    if (k<=9) {
+        cout << (k*(k+1))/2 << endl;
+        return;
     }
 
-    out(max(crnt-1,0));
+    lli prev = 9;
+
+    vi S_n = {45};
+    for (int i = 2;i<=15;i++) {
+        S_n.push_back(9*S_n.back() + pow((lli)9,i-1)*i);
+    }
+
+    for (int n=2;n<=15;n++) {
+
+        lli possible_nums = prev + pow((lli)9,n-1) * n;
+        prev = possible_nums;
+
+        if (k>possible_nums) continue;
+
+        // now we know for sure sequence ends at n-digit numbers
+
+        int digits_left = (k-possible_nums)%(n);
+
+        lli ans = 45;
+        lli s_prev = 45;
+        for (int i = 2;i<n;i++) {
+            s_prev = 9*s_prev + pow((lli)10,i-1)*45;
+            ans += s_prev;
+        }
+
+        lli digit_wholes = (k-possible_nums)/(n);
+
+        lli x = 0;
+
+        lli prev_sum = 0;
+        lli prev_num = 0;
+        int tens = 1;
+        while (digit_wholes > 0) {
+
+            lli dig = digit_wholes % 10;
+
+            if (dig == 0) {
+                digit_wholes /= 10;
+                tens++;
+                continue;
+            }
+
+            if (tens==1) {
+                x += (dig*(dig+1))/2;
+                prev_num += dig;
+            }else {
+                x += prev_num*dig;
+                prev_num += dig*pow((ll)10,tens-1);
+            }
+
+            digit_wholes /= 10;
+            tens ++;
+        }
+
+    }
 }
 
 int32_t main() {
