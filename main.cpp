@@ -151,44 +151,82 @@ void SieveOfEratosthenes() {
 
 void solve(int tt) {
 
-    int n;cin >> n;
-    vi arr(n);ArrInput(arr,n);
+    int n,m;cin >> n >> m;
+    vi swords(n);ArrInput(swords,n);
+    vector<pii> monsters; // <m_i, c_i>
 
-    int even = 0, odd = 0;
-    for (auto x:arr) {
-        if (x % 2 == 0) even++;
-        else odd++;
+    fr(i,0,m) {
+        int x; cin >> x;
+        monsters.push_back({x,0});
     }
 
-    if (even>=2) {
-        int x = -1,y = -1;
-        for (auto xx:arr) {
-            if (xx % 2 == 0) {
-                if (x==-1) x = xx;
-                else y = xx;
-            }
-        }
-        cout << x << ' ' << y << '\n';
+    fr(i,0,m) {
+        int c;cin >> c;
+        monsters[i].S = c;
+    }
+
+    int sword = *max_element(all(swords));
+    sort(all(swords));
+
+    sort(monsters.begin(), monsters.end(), [](pii a,pii b) {
+        if (a.F < b.F) return true;
+        else return false;
+    });
+
+    int ans = 0;
+    vector<pii> remaining_monsters;
+    for (auto x:monsters) {
+        if (x.F<=sword && x.S>0) {
+            ans++;
+            sword = max(sword,x.S);
+        } else if (x.S==0 && x.F<=sword) {remaining_monsters.push_back(x);}
+    }
+
+    if (remaining_monsters.size()==0) {
+        out(ans);
         return;
     }
 
-    bool found = false;
-    int first, second;
+    // bug(ans);
 
-    for(int i = 0; i < n && !found; i++)
-        for(int j = 0; j < i; j++)
-            if((arr[i] % arr[j]) % 2 == 0)
-            {
-                found = true;
-                first = arr[j];
-                second = arr[i];
+    int l = 0, r = max((size_t)0,remaining_monsters.size() - 1);
+
+    ans++;
+    r--;
+    // bug(ans,1);
+
+    for (int i = n-2;i>=0;i--) {
+        int sword = swords[i];
+
+        int lo = l, hi = r;
+        if (lo == hi) {
+            if (sword>=remaining_monsters[lo].F) {
+                ans++;
+                break;
+            }else {
                 break;
             }
+        }
+        int mid = -1;
+        while (lo <= hi) {
+            int m = (lo + hi) / 2;
+            if (remaining_monsters[m].F>sword) {
+                hi = m-1;
+            }else {
+                mid = m;
+                lo = m+1;
+            }
+        }
+        if (mid==-1)break;
 
-    if(found)
-        cout << first << ' ' << second << endl;
-    else
-        cout << -1 << endl;
+        ans ++;
+        // bug(ans,i,mid,lo,hi);
+        r=mid-1;
+
+    }
+
+    out(ans);
+
 }
 
 int32_t main() {
