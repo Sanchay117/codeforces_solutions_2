@@ -151,7 +151,7 @@ void SieveOfEratosthenes() {
 
 void solve(int tt) {
 
-    int n,m;
+    int n, m;
     cin >> n >> m;
     vector<ll> a(n);
     for (int i = 0; i < n; ++i) cin >> a[i];
@@ -159,10 +159,15 @@ void solve(int tt) {
     for (int i = 0; i < m; ++i) cin >> b[i];
     for (int i = 0; i < m; ++i) cin >> c[i];
 
-    // pair monsters as (life, reward)
-    vector<pair<ll,ll>> mons(m);
-    for (int i = 0; i < m; ++i) mons[i] = {b[i], c[i]};
-    sort(mons.begin(), mons.end()); // sort by life ascending
+    vector<pair<ll,ll>> mons;
+    mons.reserve(m);
+    for (int i = 0; i < m; ++i) mons.emplace_back(b[i], c[i]);
+
+    // Sort by life ascending; for equal life, reward descending
+    sort(mons.begin(), mons.end(), [](const pair<ll,ll>& p1, const pair<ll,ll>& p2) {
+        if (p1.first != p2.first) return p1.first < p2.first;
+        return p1.second > p2.second;
+    });
 
     multiset<ll> swords;
     for (ll x : a) swords.insert(x);
@@ -171,15 +176,13 @@ void solve(int tt) {
     for (auto &mon : mons) {
         ll life = mon.first;
         ll reward = mon.second;
-        // find smallest sword >= life
+        // smallest sword >= life
         auto it = swords.lower_bound(life);
-        if (it == swords.end()) continue; // can't kill this monster
+        if (it == swords.end()) continue;
         ll used = *it;
-        swords.erase(it); // sword disappears
+        swords.erase(it);
         ++ans;
-        if (reward > 0) {
-            swords.insert(max(used, reward)); // get new sword
-        }
+        if (reward > 0) swords.insert(max(used, reward));
     }
 
     cout << ans << '\n';
