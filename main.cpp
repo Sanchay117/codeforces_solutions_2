@@ -90,6 +90,105 @@ struct DSU {
     }
 };
 
+struct mint {
+    long long v;
+    mint(long long _v=0){ v = (_v%MOD+MOD)%MOD; }
+    mint operator+(const mint& o) const { return mint((v+o.v)%MOD); }
+    mint operator-(const mint& o) const { return mint((v-o.v+MOD)%MOD); }
+    mint operator*(const mint& o) const { return mint((v*o.v)%MOD); }
+    mint pow(long long e) const {
+        mint a = *this, r = 1;
+        while(e){ if(e&1) r = r*a; a = a*a; e >>= 1; }
+        return r;
+    }
+    mint inv() const { return pow(MOD-2); }
+};
+
+struct Fenwick {
+    int n; vector<long long> bit;
+    Fenwick(int n=0){ init(n); }
+    void init(int n_){ n = n_; bit.assign(n+1,0); }
+    void add(int idx, long long val){
+        for(; idx<=n; idx+=idx&-idx) bit[idx]+=val;
+    }
+    long long sum(int idx){
+        long long r=0;
+        for(; idx>0; idx-=idx&-idx) r+=bit[idx];
+        return r;
+    }
+    long long rangeSum(int l,int r){ return sum(r)-sum(l-1); }
+};
+
+struct SegTree {
+    int n; vector<long long> st;
+    SegTree(int _n=0){ init(_n); }
+    void init(int _n){
+        n = 1; while(n < _n) n <<= 1;
+        st.assign(2*n, 0);
+    }
+    void setPoint(int p, long long val){ // set index p (0-based)
+        p += n; st[p] = val;
+        for(p/=2; p; p/=2) st[p] = st[2*p] + st[2*p+1];
+    }
+    long long query(int l, int r){ // inclusive [l,r], 0-based
+        l += n; r += n;
+        long long res = 0;
+        while(l <= r){
+            if(l&1) res += st[l++];
+            if(!(r&1)) res += st[r--];
+            l/=2; r/=2;
+        }
+        return res;
+    }
+};
+
+struct LCA {
+    int n, LOG;
+    vector<int> depth;
+    vector<vector<int>> up;
+    LCA(int n=0){ init(n); }
+    void init(int _n){
+        n = _n; LOG = 1;
+        while((1<<LOG) <= n) ++LOG;
+        up.assign(LOG, vector<int>(n, -1));
+        depth.assign(n, 0);
+    }
+    void dfs(int u, int p, const vector<vector<int>>& g){
+        up[0][u] = p;
+        for(int k=1;k<LOG;++k) up[k][u] = up[k-1][u] == -1 ? -1 : up[k-1][ up[k-1][u] ];
+        for(int v: g[u]) if(v!=p){
+            depth[v] = depth[u]+1;
+            dfs(v,u,g);
+        }
+    }
+    int lca(int a, int b){
+        if(depth[a] < depth[b]) swap(a,b);
+        int diff = depth[a]-depth[b];
+        for(int k=0;k<LOG;++k) if(diff & (1<<k)) a = up[k][a];
+        if(a==b) return a;
+        for(int k=LOG-1;k>=0;--k) if(up[k][a] != up[k][b]) { a = up[k][a]; b = up[k][b]; }
+        return up[0][a];
+    }
+};
+
+vector<long long> dijkstra(int n, int src, const vector<vector<pair<int,int>>>& g){
+    const long long INF = (1LL<<62);
+    vector<long long> dist(n, INF);
+    priority_queue<pair<long long,int>, vector<pair<long long,int>>, greater<>> pq;
+    dist[src] = 0; pq.push({0, src});
+    while(!pq.empty()){
+        auto [d,u] = pq.top(); pq.pop();
+        if(d != dist[u]) continue;
+        for(auto [v,w] : g[u]){
+            if(dist[v] > d + w){
+                dist[v] = d + w;
+                pq.push({dist[v], v});
+            }
+        }
+    }
+    return dist;
+}
+
 ulli mul_mod(ulli a, ulli b, ulli mod){
     return (u128) a * b % mod;
 }
@@ -137,6 +236,17 @@ lli modinv(lli x){
     return res;
 }
 
+template<typename T>
+T binexp(T a, long long e){
+    T res = 1;
+    while(e){
+        if(e&1) res = res * a;
+        a = a * a;
+        e >>= 1;
+    }
+    return res;
+}
+
 const int MAXN = 10000000;  // Set the maximum value of n as 10 million
 std::vector<bool> primes(MAXN + 1, true);  // Create a bool vector of size 10,000,001
 
@@ -151,41 +261,7 @@ void SieveOfEratosthenes() {
 
 void solve(int tt) {
 
-    int n, m;
-    cin >> n >> m;
-    vector<ll> a(n);
-    for (int i = 0; i < n; ++i) cin >> a[i];
-    vector<ll> b(m), c(m);
-    for (int i = 0; i < m; ++i) cin >> b[i];
-    for (int i = 0; i < m; ++i) cin >> c[i];
 
-    vector<pair<ll,ll>> mons;
-    mons.reserve(m);
-    for (int i = 0; i < m; ++i) mons.emplace_back(b[i], c[i]);
-
-    // Sort by life ascending; for equal life, reward descending
-    sort(mons.begin(), mons.end(), [](const pair<ll,ll>& p1, const pair<ll,ll>& p2) {
-        if (p1.first != p2.first) return p1.first < p2.first;
-        return p1.second > p2.second;
-    });
-
-    multiset<ll> swords;
-    for (ll x : a) swords.insert(x);
-
-    int ans = 0;
-    for (auto &mon : mons) {
-        ll life = mon.first;
-        ll reward = mon.second;
-        // smallest sword >= life
-        auto it = swords.lower_bound(life);
-        if (it == swords.end()) continue;
-        ll used = *it;
-        swords.erase(it);
-        ++ans;
-        if (reward > 0) swords.insert(max(used, reward));
-    }
-
-    cout << ans << '\n';
 
 }
 

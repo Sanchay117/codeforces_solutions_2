@@ -1,209 +1,89 @@
+#ifndef ONLINE_JUDGE
+#include "debug.cpp"
+#else
+#define debug(...)
+#define debugArr(...)
+#endif
 #include <bits/stdc++.h>
-#include <climits>
-#include <fstream>
-#include <future>
-#include <numeric>
-
+#define ll long long
+#define nl '\n'
+#define no "No\n"
+#define yes "Yes\n"
+#define all(v) v.begin(), v.end()
+#define allr(v) v.rbegin(), v.rend()
+#define allin(s, n, vec) for (ll i = s; i < n; i++) cin >> vec[i]
+ll const MOD = 1e9 + 7;
+ll const INF = 1e18;
 using namespace std;
 
-#define ll long long
-#define lli long long int
-#define ulli unsigned long long int
-#define ld long double
-#define F first
-#define S second
-#define pb push_back
-#define vi vector<int>
-#define vll vector<long long>
-#define vlli vector<long long int>
-#define pii pair<int,int>
-#define plli pair<long long int,long long int>
-#define mii map<int,int>
-#define mci map<char,int>
-#define mic map<int,char>
-#define msi map<string,int>
-#define mis map<int,string>
-#define all(arr) arr.begin(), arr.end()
-#define all(arr,n) arr, arr+n
-#define fr(i,a,b) for(int i = a; i<b;i++)
-#define bug(...) __f (#__VA_ARGS__, __VA_ARGS__)
-#define MOD 1000000007LL
-#define haan cout << "YES" << endl
-#define nahi cout << "NO" << endl
-#define yes cout << "Yes" << endl
-#define no cout << "No" << endl
-#define out(x) cout << x << endl
-#define tupiii tuple<int,int,int>
-#define billion 10e9
-#define printMatrix(arr,n,m) for(int i = 0;i<n;i++){\
-        for(int j = 0;j<m;j++){\
-            cout << arr[i][j] << " ";\
-        }\
-        cout << endl;\
-    }
-#define sort_dec(arr,n) sort(arr,arr+n,greater<>());
-#define sort_asc(arr,n) sort(arr,arr+n);
-#define printV(vec) for(int i = 0;i<vec.size();i++) cout << vec[i] << " ";\
-	cout << endl;
-#define MatrixInput(arr,n,m) for(int i = 0;i<n;i++){\
-                                for(int j = 0;j<m;j++){\
-                                    cin >> arr[i][j] ;\
-                                }\
-                             }
-#define ArrInput(arr,n) for(int i = 0;i<n;i++) cin >> arr[i];
-
-template <typename Arg1>
-void __f (const char* name, Arg1&& arg1) { cout << name << " : " << arg1 << endl; }
-template <typename Arg1, typename... Args>
-void __f (const char* names, Arg1&& arg1, Args&&... args){
-	const char* comma = strchr (names + 1, ',');
-	cout.write (names, comma - names) << " : " << arg1 << " | "; __f (comma + 1, args...);
-}
-
-#define fo(i,n)   for(i=0;i<(n);++i)
-#define repA(i,j,n)   for(i=(j);i<=(n);++i)
-#define repD(i,j,n)   for(i=(j);i>=(n);--i)
-#define all(x) begin(x), end(x)
-#define sz(x) ((lli)(x).size())
-#define eb emplace_back
-#define X first
-#define Y second
-
-using u128 = __uint128_t;
-
-// ordered set
-#include <ext/pb_ds/assoc_container.hpp>
-#include <ext/pb_ds/tree_policy.hpp>
-using namespace __gnu_pbds;
-template<class T> using oset = tree<T, null_type, less<T>, rb_tree_tag,tree_order_statistics_node_update>;
-
-struct DSU {
-    vector<int> p, r;
-    DSU(int n): p(n), r(n,0) { iota(p.begin(), p.end(), 0); }
-    int find(int x){ return p[x]==x? x: p[x]=find(p[x]); }
-    bool unite(int a, int b){
-        a = find(a); b = find(b);
-        if (a==b) return false;
-        if (r[a] < r[b]) swap(a,b);
-        p[b]=a; if (r[a]==r[b]) r[a]++;
-        return true;
-    }
-};
-
-ulli mul_mod(ulli a, ulli b, ulli mod){
-    return (u128) a * b % mod;
-}
-ulli pow_mod(ulli a, ulli d, ulli mod){
-    ulli r = 1;
-    while(d){
-        if(d & 1) r = mul_mod(r, a, mod);
-        a = mul_mod(a, a, mod);
-        d >>= 1;
-    }
-    return r;
-}
-
-bool isPrime64(ulli n){
-    if(n < 2) return false;
-    for(ulli p : {2ULL,3ULL,5ULL,7ULL,11ULL,13ULL,17ULL,19ULL,23ULL}){
-        if(n % p == 0) return n == p;
-    }
-    ulli d = n - 1, s = 0;
-    while((d & 1) == 0){ d >>= 1; ++s; }
-    ulli bases[] = {2ULL, 325ULL, 9375ULL, 28178ULL, 450775ULL, 9780504ULL, 1795265022ULL};
-    for(ulli a : bases){
-        if(a % n == 0) continue;
-        ulli x = pow_mod(a % n, d, n);
-        if(x == 1 || x == n-1) continue;
-        bool comp = true;
-        for(ulli r = 1; r < s; ++r){
-            x = mul_mod(x, x, n);
-            if(x == n-1){ comp = false; break; }
-        }
-        if(comp) return false;
-    }
-    return true;
-}
-
-lli modinv(lli x){
-    lli a = x, m = MOD;
-    lli res = 1, pw = m-2;
-    lli base = (a % m + m) % m;
-    while(pw){
-        if(pw & 1) res = (res * base) % m;
-        base = (base * base) % m;
-        pw >>= 1;
-    }
-    return res;
-}
-
-const int MAXN = 10000000;  // Set the maximum value of n as 10 million
-std::vector<bool> primes(MAXN + 1, true);  // Create a bool vector of size 10,000,001
-
-void SieveOfEratosthenes() {
-    for (int p = 2; p * p <= MAXN; p++) {  // Iterate up to sqrt(MAXN)
-        if (primes[p]) {  // Check if p is a prime number
-            for (int i = p * p; i <= MAXN; i += p)  // Mark all multiples of p as false
-                primes[i] = false;
-        }
-    }
-}
-
-void solve(int tt) {
-
-    int n, m;
+void solve()
+{
+    ll n, m;
     cin >> n >> m;
-    vector<ll> a(n);
-    for (int i = 0; i < n; ++i) cin >> a[i];
-    vector<ll> b(m), c(m);
-    for (int i = 0; i < m; ++i) cin >> b[i];
-    for (int i = 0; i < m; ++i) cin >> c[i];
 
-    vector<pair<ll,ll>> mons;
-    mons.reserve(m);
-    for (int i = 0; i < m; ++i) mons.emplace_back(b[i], c[i]);
+    vector<ll> a(n), b(m), c(m);
+    allin(0, n, a);
+    allin(0, m, b);
+    allin(0, m, c);
 
-    // Sort by life ascending; for equal life, reward descending
-    sort(mons.begin(), mons.end(), [](const pair<ll,ll>& p1, const pair<ll,ll>& p2) {
-        if (p1.first != p2.first) return p1.first < p2.first;
-        return p1.second > p2.second;
-    });
+    multiset<ll> st(all(a));
+    vector<pair<ll, ll>> good;
+    vector<ll> normal;
 
-    multiset<ll> swords;
-    for (ll x : a) swords.insert(x);
-
-    int ans = 0;
-    for (auto &mon : mons) {
-        ll life = mon.first;
-        ll reward = mon.second;
-        // smallest sword >= life
-        auto it = swords.lower_bound(life);
-        if (it == swords.end()) continue;
-        ll used = *it;
-        swords.erase(it);
-        ++ans;
-        if (reward > 0) swords.insert(max(used, reward));
+    for (int i = 0; i < m; i++)
+    {
+        if (c[i] > 0)
+            good.push_back({b[i], c[i]});
+        else
+            normal.push_back(b[i]);
     }
 
-    cout << ans << '\n';
+    sort(all(good));
+    sort(all(normal));
+    ll cnt = 0;
 
+    auto work = [&](ll need, ll upgrade)
+    {
+        auto it = st.lower_bound(need);
+        if (it == st.end())
+            return false;
+
+        ll cur = *it;
+        st.erase(it);
+
+        if (upgrade > 0)
+            st.insert(max(cur, upgrade));
+
+        return true;
+    };
+
+    for (auto &[health, bonus] : good)
+        if (work(health, bonus))
+            cnt++;
+
+    for (auto &ele : normal)
+        if (work(ele, 0))
+            cnt++;
+
+    cout << cnt << nl;
 }
 
-int32_t main() {
+int main()
+{
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
 
-    #ifndef ONLINE_JUDGE
-        freopen("input.txt", "r", stdin);
-        freopen("output.txt", "w", stdout);
-    #endif
+#ifndef ONLINE_JUDGE
+    freopen("input.txt","r",stdin);
+    freopen("output.txt","w",stdout);
+#endif
 
-    int t = 1;
-    cin >> t;
-    int i = 1;
+    ll tc = 1;
+    cin >> tc;
 
-    while (t--) {
-        solve(i);
-        i++;
-    }
+    while(tc--)
+        solve();
 
     return 0;
 }
