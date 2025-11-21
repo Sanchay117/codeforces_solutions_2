@@ -283,48 +283,52 @@ bool possible(int m, int k, const vlli &b, const vlli &groups, const vlli &b_pre
     return true;
 }
 
-void solve(int tt) {
+bool recursion(int n,vlli &powers_of_two,vlli &factorials,int &ans) {
 
-    lli n,a,b; cin>>n>>a>>b;
-
-    vi arr(n);ArrInput(arr,n);
-
-    lli ans = 0;
-
-    vlli prefix = {0};
-    for (auto x:arr) prefix.push_back(x+prefix.back());
-
-    ans+=b*(arr[0]);
-
-    int crnt = 0,idx = -1;
-
-    for (int i = 1;i<n;i++) {
-        // conquered till ith
-
-        lli choice1 = b*(prefix.back()-prefix[i]) - b*crnt*(n-i); // no swap
-
-        int lo = idx+1, hi = i-1;
-        lli mid = -1;
-        lli cost;
-        while (lo <= hi) {
-            lli middle = lo + (hi-lo)/2;
-
-            cost = a*(arr[middle]-crnt) + b*(prefix.back()-prefix[middle+1]) - b*arr[middle]*(n-middle-1);
-            // bug(hi,lo,middle,cost, choice1);
-            if (cost >= choice1){ hi = middle-1;}
-            else if (cost < choice1) {lo = middle+1;mid = middle;}
+    if (n==0 || n==1) {
+        if (n==1) {
+            ans++;
+            return true;
         }
-
-        // bug(i,choice1,mid,cost,ans,crnt);
-
-        if (mid == -1) {ans+=choice1;break;}
-
-        ans += a*(arr[mid]-crnt) + b*(arr[i]-arr[mid]);
-        crnt = arr[mid];
-        idx = mid;
+        return true;
+    }
+    if (n<0) {
+        return false;
+        ans = 0;
     }
 
-    out(ans);
+    auto it = upper_bound(powers_of_two.begin(), powers_of_two.end(), n);
+    int x = 0;
+    if (it == powers_of_two.begin()) {
+        x = 2*n;
+    } else {
+        --it;
+        x=*it;
+    }
+
+    auto it2 = upper_bound(factorials.begin(), factorials.end(), n);
+    int y = 0;
+    if (it2 == factorials.begin()) {
+        y = 2*n;
+    } else {
+        --it2;
+        y = *it2;
+    }
+
+    ans++;
+
+    return recursion(n-x,powers_of_two,factorials,ans) || recursion(n-y,powers_of_two,factorials,ans);
+
+}
+
+void solve(int tt,vlli &powers_of_two,vlli &factorials) {
+
+    int n;cin >> n;
+
+    int ans = 0;
+
+    if (recursion(n,powers_of_two,factorials,ans)) out(ans);
+    else out(-1);
 
 }
 
@@ -339,8 +343,21 @@ int32_t main() {
     cin >> t;
     int i = 1;
 
+    vlli powers_of_two = {1};
+
+    int x = 1;
+    while (pow(2,x)<=(lli)1e12) powers_of_two.push_back(pow(2,x));
+
+    vlli factorials = {1};
+    x = 2;
+    while (x*factorials.back()<=(lli)1e12) {
+        factorials.push_back(factorials.back()*x);
+        x++;
+    }
+
+
     while (t--) {
-        solve(i);
+        solve(i,powers_of_two,factorials);
         i++;
     }
 
