@@ -283,44 +283,17 @@ bool possible(int m, int k, const vlli &b, const vlli &groups, const vlli &b_pre
     return true;
 }
 
+bool checkPalindrome(lli xx) {
+    string s = to_string(xx);
+    string x = s;
+    reverse(x.begin(), x.end());
+    if (x==s) return true;
+    else return false;
+}
+
 void solve(int tt) {
 
-    lli n;cin >> n;
-    string s;cin >> s;
 
-    lli a = 0, b = 0;
-    for (auto x:s) {
-        if (x=='+') a++;
-        else b++;
-    }
-
-    b = -1*b;
-
-    vector<string> ans;
-
-    lli q;cin >> q;
-    while (q--) {
-        lli x,y;cin >> x;cin >> y;
-
-        if (x<y) swap(x,y);
-
-        lli c = a*x + b*y;
-        // bug(c,a,x,y);
-        if (c==0) ans.push_back("YES");
-        else if (c<0) ans.push_back("NO");
-        else {
-            if ( x!=y && (c)%(x-y)==0) {
-                // bug(c,x,y,ans.size(),min(a,b),c/(x-y));
-                if (c / (x - y) <= n) {
-                    ans.push_back("YES");
-                } else {
-                    ans.push_back("NO");
-                }
-            }else ans.push_back("NO");
-        }
-    }
-
-    for (auto x:ans) cout << x << '\n';
 
 }
 
@@ -332,8 +305,30 @@ int32_t main() {
     #endif
 
     int t = 1;
-    // cin >> t;
+    cin >> t;
     int i = 1;
+
+    vector<pair<lli,lli>> dp(4e4 + 1);
+    dp[1].F = 1;
+    dp[1].S = 1;
+    dp[0].F = 1;
+    dp[0].S = 1;
+
+    cout << dp[0].F << endl;
+
+    for (lli i = 2; i <= 4e4; ++i) {
+        for (lli j = 1; j <= i; ++j) {
+            dp[i].F += dp[i - j].F;
+            dp[i].F %= MOD;
+            if (checkPalindrome(j)) {
+                dp[i].S += dp[i - j].S;
+                dp[i].S %= MOD;
+            }
+        }
+    }
+
+    cout << dp[5].F << endl;
+    cout << dp[5].S << endl;
 
     while (t--) {
         solve(i);
