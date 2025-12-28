@@ -21,7 +21,7 @@ This repository contains my solutions to various Codeforces problems. Each probl
     - Compare `result.txt` with `output.txt` to check if the solution is correct.
 
 3. **Adding New Problems**:
-    - For every new problem, copy the content of `main.cpp` to a new file named `problem_name.cpp`, where `problem_name` describes the challenge (e.g., `div2_a.cpp`).
+    - For every new problem, copy the content of `main.cpp` to a new file named `problem_name_contest.cpp`, where `problem_name` describes the challenge (e.g., `<problem_name>_2143C.cpp`).
     - Update `input.txt` and `output.txt` accordingly to match the new problem requirements.
 
 ## Notes
